@@ -1,0 +1,26 @@
+# HomeLab device: ESP32 DevKit on Daikin EHVX04S18EJ6V (X10A).
+# Model mapping is selected in base.yaml (confs/erga_eh_e_ej_04_08.yaml).
+packages:
+  base: !include base.yaml
+
+esphome:
+  name: esphome-altherma
+  friendly_name: ESPHome Altherma
+  name_add_mac_suffix: false
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password

@@ -1,0 +1,7 @@
+# HomeLab device with simulated X10A responses (no heat pump connection needed).
+packages:
+  device: !include esphome-altherma-homelab.yaml
+
+esphome:
+  build_flags:
+    - -DUSE_MOCK_UART
