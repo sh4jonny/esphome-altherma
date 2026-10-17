@@ -261,6 +261,47 @@ sensor:
     datasize: 1
     accuracy_decimals: 0
 
+  # Registers below are live on this unit although 0x20 offsets 2/12/14
+  # (O/U heat exchanger, high/low pressure) read 0. Verified 2026-10-18 by
+  # reading raw frames idle vs. compressor running (tools/x10a_probe).
+  # Indoor-unit refrigerant pressure sensor: condensing pressure while the
+  # compressor runs (17.5 bar at LWT 29 °C), equalised pressure when idle.
+  - <<: *pressure
+    name: Refrigerant pressure
+    register: 0x62
+    offset: 15
+    convid: 105
+    datasize: 2
+    entity_category: diagnostic
+  - <<: *temp
+    name: Refrigerant pressure saturation temp.
+    register: 0x62
+    offset: 15
+    convid: 405
+    datasize: 2
+    entity_category: diagnostic
+  # ESPAltherma maps this as conv 119, which reads negative values as
+  # +250 °C in the vendored converters.h (raomin/ESPAltherma#543); conv 103
+  # is the signed equivalent.
+  - <<: *temp
+    name: Outdoor heat exchanger temp.
+    register: 0xA0
+    offset: 2
+    convid: 103
+    datasize: 2
+    entity_category: diagnostic
+  # Commented out in the ESPAltherma E_EJ definition, live here: matches the
+  # installer setting (heating ΔT 3 K).
+  - <<: *altherma_base
+    name: Target delta T heating
+    register: 0x64
+    offset: 14
+    convid: 152
+    datasize: 1
+    unit_of_measurement: K
+    accuracy_decimals: 0
+    entity_category: diagnostic
+
 binary_sensor:
   - <<: *binary
     name: Defrost Operation
