@@ -16,6 +16,18 @@ esp32:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
+  on_connect:
+    - output.turn_on: wifi_led
+  on_disconnect:
+    - output.turn_off: wifi_led
+
+# On-board LED, lit while Wi-Fi is connected.
+output:
+  - platform: gpio
+    id: wifi_led
+    pin:
+      number: GPIO2
+      ignore_strapping_warning: true
 
 api:
   encryption:
